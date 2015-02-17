@@ -48,7 +48,7 @@ install_packages()
     yum -y groupinstall 'Development Tools'
     yum -y install zlib-devel openssl-devel ncurses-devel libffi-devel libxml2-devel libcurl-devel curl-devel 
     yum -y install tree tar wget perl-ExtUtils-MakeMaker asciidoc xmlto curl libcurl libxml2
-    yum -y installR
+    yum -y install R
 
     echo " "
     echo -e ">>>>> end of install_packages ..."
