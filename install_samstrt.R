@@ -1,0 +1,5 @@
+source("http://bioconductor.org/biocLite.R")
+biocLite(c('samr', 'devtools'))
+library(devtools)
+install_github('shka/R-SAMstrt')
+install.packages("compare", repos="http://cran.ism.ac.jp/")
