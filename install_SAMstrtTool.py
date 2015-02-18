@@ -39,7 +39,7 @@ def main():
         print '>>>>>>>>>>>>>>>>> clone SAMstrtTool from github...'
         if not os.path.isfile(tool_dname + samstrt_dir + samstrt_xml):
             os.chdir(tool_dname)
-            Repo.clone_from(samstrt_url, samstrt_dir)
+            Repo.clone_from(samstrt_url, tool_dname + samstrt_dir)
         else:
             print 'SAMstrtTool already cloned. To update, Please delete, move or rename "' + tool_dname + samstrt_dir + '" before script execute.'
             return 0
