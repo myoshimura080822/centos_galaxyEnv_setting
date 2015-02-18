@@ -9,10 +9,10 @@ print 'install_SAMstrt.py Started......'
 
 homedir = '/usr/local/galaxy'
 dist_dname = homedir + '/galaxy-dist'
-tool_dname = dist_dname + '/tools'
+tool_dname = dist_dname + '/tools/'
 
 samstrt_url = 'https://github.com/myoshimura080822/galaxy_sam_strt_tool.git'
-samstrt_dir = '/galaxy_sam_strt_tool'
+samstrt_dir = 'galaxy_sam_strt_tool'
 samstrt_xml = '/testSAMstrt.xml'
 
 def add_tool_conf(tree, list):
@@ -47,8 +47,8 @@ def main():
         print ':::::::::::::::::::::::::::::::::::::::::::'
         print '>>>>>>>>>>>>>>>>> add SAMstrtTool-node to tool_conf.xml...'
 
-        mytoolsdir = tool_dname + '/' + samstrt_dir + '/'
-        xml_list = [file.replace(tool_dname + '/', "") for file in get_all_xml(mytoolsdir)]
+        mytoolsdir = tool_dname + samstrt_dir + '/'
+        xml_list = [file.replace(tool_dname, "") for file in get_all_xml(mytoolsdir)]
         print (set(xml_list))
         print xml_list
 
