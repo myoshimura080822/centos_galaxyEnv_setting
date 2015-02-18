@@ -126,13 +126,22 @@ setting_galaxy()
         sed -i -e "s/admin_users = \(.*\)/admin_users = $galaxy_admin/" $galaxy_path/$galaxy_ini
         sed -i -e "s/#tool_dependency_dir/tool_dependency_dir/" $galaxy_path/$galaxy_ini
         sed -i -e "s/tool_dependency_dir = \(.*\)/tool_dependency_dir = $galaxy_dep_dir/" $galaxy_path/$galaxy_ini
-        service galaxy restart
     else
         echo "galaxy-dist Dir not found."
     fi
 
     echo " "
     echo -e ">>>>> end of setting_galaxy..."
+}
+
+install_SAMstrt()
+{
+    echo -e ">>>>> start install_SAMstrt ..."
+    echo " "
+    pip install GitPython
+    python ${current_path}/install_SAMstrtTool.py
+    echo " "
+    echo -e ">>>>> end of install_SAMstrt ..."
 }
 
 main()
@@ -150,6 +159,10 @@ main()
         echo
         setting_galaxy
         echo
+        install_SAMstrt
+        echo
+        service galaxy restart
+        
         (( c++ ))
     done
 }
