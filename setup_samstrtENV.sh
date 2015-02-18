@@ -26,6 +26,11 @@ recipe_dir='galaxy_sam_strt_cookbooks'
 
 current_path=`pwd`
 
+galaxy_path='/usr/local/galaxy/galaxy-dist'
+galaxy_ini='universe_wsgi.ini'
+galaxy_dep_dir='dependency_dir'
+galaxy_admin='galaxy@galaxy.com'
+
 # methods
 create_dir()
 {
@@ -106,6 +111,30 @@ nginx_prep()
     echo -e ">>>>> end of nginx_prep ..."
 }
 
+setting_galaxy()
+{
+
+    echo -e ">>>>> start setting_galaxy ..."
+    echo " "
+    
+    if [ -d $galaxy_path ]; then
+        if [ ! -d $galaxy_path/$galaxy_dep_dir ]; then
+            mkdir $galaxy_path/$galaxy_dep_dir
+        fi
+        
+        sed -i -e "s/#admin_users/admin_users/" $galaxy_path/$galaxy_ini
+        sed -i -e "s/admin_users = \(.*\)/admin_users = $galaxy_admin/" $galaxy_path/$galaxy_ini
+        sed -i -e "s/#tool_dependency_dir/tool_dependency_dir/" $galaxy_path/$galaxy_ini
+        sed -i -e "s/tool_dependency_dir = \(.*\)/tool_dependency_dir = $galaxy_dep_dir/" $galaxy_path/$galaxy_ini
+        service galaxy restart
+    else
+        echo "galaxy-dist Dir not found."
+    fi
+
+    echo " "
+    echo -e ">>>>> end of setting_galaxy..."
+}
+
 main()
 {
     c=0
@@ -118,6 +147,8 @@ main()
         exec_chef_solo
         echo
         nginx_prep
+        echo
+        setting_galaxy
         echo
         (( c++ ))
     done
