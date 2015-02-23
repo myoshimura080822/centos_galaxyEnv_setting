@@ -220,6 +220,8 @@ main()
         echo
         samtools_prep
         echo
+        sailfish_prep
+        echo
         
         (( c++ ))
     done
