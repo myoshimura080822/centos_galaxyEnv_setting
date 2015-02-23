@@ -194,6 +194,8 @@ main()
         sailfish_prep
         echo
         setting_galaxy
+        echo
+        service galaxy restart
         
         (( c++ ))
     done
