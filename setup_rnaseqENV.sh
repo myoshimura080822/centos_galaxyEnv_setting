@@ -165,18 +165,27 @@ samtools_prep()
         make
         make install
 
+        cp samtools /usr/local/bin/
+    fi
+
+    if [ ! -f $lib_dir/libbam.a ];then
         cp libbam.a $lib_dir
+    else
+        echo -e "samtools libbam.a already copied."
+    fi
+
+    if [ ! -d $bam_dir ];then
         mkdir $bam_dir
         cp *.h $bam_dir
-        cp samtools /usr/local/bin/
+    else
+        echo -e "samtools bam-dir already exists."
     fi
 
     if [ ! `echo $PATH | grep -e $samtools_path/bin` ] ; then
         PATH=$PATH:$samtools_path/bin
         export PATH
-        echo $PATH
-        sed -i ‘$s/$/$PATH\n/’ /etc/bashrc
-        sed -i ‘$s/$/export PATH\n/’ /etc/bashrc
+        echo $PATH >> /etc/bashrc
+        echo export PATH >> /etc/bashrc
     fi
 
     echo " "
