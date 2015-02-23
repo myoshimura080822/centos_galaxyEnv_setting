@@ -29,39 +29,12 @@ sailfish_name='Sailfish-0.6.3-Linux_x86-64'
 sailfish_file='Sailfish-0.6.3-Linux_x86-64.tar.gz'
 sailfish_source='https://github.com/kingsfordgroup/sailfish/releases/download/v0.6.3/'$sailfish_file
 sailfish_path=$source_dir'/'$sailfish_name
-
-
-
-
-recipe_url='https://github.com/myoshimura080822/galaxy_sam_strt_cookbooks.git'
-recipe_dir='galaxy_sam_strt_cookbooks'
-
-current_path=`pwd`
-
+git 
 galaxy_path='/usr/local/galaxy/galaxy-dist'
 galaxy_ini='universe_wsgi.ini'
 galaxy_dep_dir='dependency_dir'
 galaxy_admin='galaxy@galaxy.com'
 
-nginx_prep()
-{
-    echo -e ">>>>> start nginx_prep ..."
-    echo " "
-    if [ ! -d /etc/nginx/conf.d ]; then
-        yum -y install nginx
-        chkconfig nginx on
-    else
-        echo "nginx already installed."
-    fi
-    
-    if [ -f /etc/nginx/conf.d/default.conf ]; then
-        mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf_bk
-    fi
-    cp ${current_path}/nginx_conf/default.conf /etc/nginx/conf.d/
-    service nginx start    
-    echo " "
-    echo -e ">>>>> end of nginx_prep ..."
-}
 
 setting_galaxy()
 {
