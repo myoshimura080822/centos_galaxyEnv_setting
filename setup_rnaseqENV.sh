@@ -25,6 +25,12 @@ samtools_file='samtools-1.2.tar.bz2'
 samtools_source='https://github.com/samtools/samtools/releases/download/1.2/'$samtools_file
 samtools_path=$source_dir'/'$samtools_name
 
+sailfish_name='Sailfish-0.6.3-Linux_x86-64'
+sailfish_file='Sailfish-0.6.3-Linux_x86-64.tar.gz'
+sailfish_source='https://github.com/kingsfordgroup/sailfish/releases/download/v0.6.3/'$sailfish_file
+sailfish_path=$source_dir'/'$sailfish_name
+
+
 
 
 recipe_url='https://github.com/myoshimura080822/galaxy_sam_strt_cookbooks.git'
@@ -36,33 +42,6 @@ galaxy_path='/usr/local/galaxy/galaxy-dist'
 galaxy_ini='universe_wsgi.ini'
 galaxy_dep_dir='dependency_dir'
 galaxy_admin='galaxy@galaxy.com'
-
-
-
-chefdk_prep()
-{
-    echo -e ">>>>> start chefdk_prep ..."
-    echo " " 
-    cd $source_dir
-    if [ -d $chefdk_path ];then
-        echo -e "chefdk already downloaded."
-    else
-        echo -e "Download and Installing ..."
-        wget $chefdk_url
-        rpm -i $chefdk_rpm
-        chef -v
-
-        if [ ! `echo $PATH | grep -e $chefdk_path` ] ; then
-            PATH=$PATH:$chefdk_path
-            export PATH
-        fi
-    fi
-    echo " "
-    echo -e ">>>>> end of chef_prep ..."
-}
-
-
-
 
 nginx_prep()
 {
@@ -155,6 +134,7 @@ samtools_prep()
     echo -e ">>>>> start samtools_prep ..."
     echo " " 
     cd $source_dir
+
     if [ -d $samtools_path ];then
         echo -e "samtools already downloaded."
     else
@@ -164,8 +144,6 @@ samtools_prep()
         cd $samtools_name
         make
         make install
-
-        cp samtools /usr/local/bin/
     fi
 
     if [ ! -f $lib_dir/libbam.a ];then
@@ -185,10 +163,49 @@ samtools_prep()
         echo $PATH 
         echo PATH=\$PATH:$samtools_path/bin >> /etc/bashrc
         echo export PATH >> /etc/bashrc
+        source /etc/bashrc
+    else
+        echo -e "samtools PATH already setting."
     fi
 
     echo " "
     echo -e ">>>>> end of samtools_prep ..."
+}
+
+sailfish_prep()
+{
+    echo -e ">>>>> start sailfish_prep ..."
+    echo " " 
+    cd $source_dir
+
+    if [ -d $sailfish_path ];then
+        echo -e "sailfish already downloaded."
+    else
+        echo -e "Download and Installing ..."
+        wget $sailfish_source
+        tar zxvf $sailfish_file
+    fi
+
+    if [ ! `echo $PATH | grep -e $sailfish_path/bin` ] ; then
+        echo $PATH 
+        echo PATH=\$PATH:$sailfish_path/bin >> /etc/bashrc
+        echo export PATH >> /etc/bashrc
+        source /etc/bashrc
+    else
+        echo -e "sailfish PATH already setting."
+    fi
+
+    if [ ! `echo $LD_LIBRARY_PATH | grep -e $sailfish_path/lib` ] ; then
+        echo $LD_LIBRARY_PATH 
+        echo LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$sailfish_path/lib >> /etc/bashrc
+        echo export LD_LIBRARY_PATH >> /etc/bashrc
+        source /etc/bashrc
+    else
+        echo -e "sailfish-lib in LD_LIBRARY_PATH already setting."
+    fi
+
+    echo " "
+    echo -e ">>>>> end of sailfish_prep ..."
 }
 
 
