@@ -182,9 +182,8 @@ samtools_prep()
     fi
 
     if [ ! `echo $PATH | grep -e $samtools_path/bin` ] ; then
-        PATH=$PATH:$samtools_path/bin
-        export PATH
-        echo $PATH >> /etc/bashrc
+        echo $PATH 
+        echo PATH=\$PATH:$samtools_path/bin >> /etc/bashrc
         echo export PATH >> /etc/bashrc
     fi
 
