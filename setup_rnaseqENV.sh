@@ -5,6 +5,11 @@ echo " setup_rnaseqENV started ..."
 echo "################################################"
 echo " "
 
+if [ $# -ne 1 ]; then
+    echo "Invalid argument. (require galaxy-user name)" 1>&2
+    exit 1
+fi
+
 clear
 export who=`whoami`
 SCRIPTDIRECTORY="$(pwd)"
@@ -29,38 +34,10 @@ sailfish_name='Sailfish-0.6.3-Linux_x86-64'
 sailfish_file='Sailfish-0.6.3-Linux_x86-64.tar.gz'
 sailfish_source='https://github.com/kingsfordgroup/sailfish/releases/download/v0.6.3/'$sailfish_file
 sailfish_path=$source_dir'/'$sailfish_name
-git 
-galaxy_path='/usr/local/galaxy/galaxy-dist'
+
+galaxy_path=/usr/local/$1/galaxy-dist
 galaxy_ini='universe_wsgi.ini'
 galaxy_dep_dir='dependency_dir'
-galaxy_admin='galaxy@galaxy.com'
-
-
-setting_galaxy()
-{
-
-    echo -e ">>>>> start setting_galaxy ..."
-    echo " "
-    
-    if [ -d $galaxy_path ]; then
-        if [ ! -d $galaxy_path/$galaxy_dep_dir ]; then
-            mkdir $galaxy_path/$galaxy_dep_dir
-        fi
-        
-        sed -i -e "s/#admin_users/admin_users/" $galaxy_path/$galaxy_ini
-        sed -i -e "s/admin_users = \(.*\)/admin_users = $galaxy_admin/" $galaxy_path/$galaxy_ini
-        sed -i -e "s/#tool_dependency_dir/tool_dependency_dir/" $galaxy_path/$galaxy_ini
-        sed -i -e "s/tool_dependency_dir = \(.*\)/tool_dependency_dir = $galaxy_dep_dir/" $galaxy_path/$galaxy_ini
-    else
-        echo "galaxy-dist Dir not found."
-    fi
-
-    echo " "
-    echo -e ">>>>> end of setting_galaxy..."
-}
-
-
-
 
 # methods
 create_dir()
@@ -181,6 +158,27 @@ sailfish_prep()
     echo -e ">>>>> end of sailfish_prep ..."
 }
 
+setting_galaxy()
+{
+
+    echo -e ">>>>> start setting_galaxy ..."
+    echo " "
+    
+    if [ -d $galaxy_path ]; then
+        if [ ! -d $galaxy_path/$galaxy_dep_dir ]; then
+            mkdir $galaxy_path/$galaxy_dep_dir
+        fi
+        
+        sed -i -e "s/#tool_dependency_dir/tool_dependency_dir/" $galaxy_path/$galaxy_ini
+        sed -i -e "s/tool_dependency_dir = \(.*\)/tool_dependency_dir = $galaxy_dep_dir/" $galaxy_path/$galaxy_ini
+    else
+        echo "galaxy-dist Dir not found."
+    fi
+
+    echo " "
+    echo -e ">>>>> end of setting_galaxy..."
+}
+
 
 main()
 {
@@ -195,6 +193,7 @@ main()
         echo
         sailfish_prep
         echo
+        setting_galaxy
         
         (( c++ ))
     done
