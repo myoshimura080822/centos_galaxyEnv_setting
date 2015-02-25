@@ -60,6 +60,8 @@ def main():
                 print '%s tool node already created.' % e.get('file')
         print xml_list
         add_tool_conf(tool_tree, xml_list)
+        
+        os.system("service galaxy restart")
 
         print ':::::::::::::::::::::::::::::::::::::::::::'
         print '>>>>>>>>>>>>>>>>> script ended :)'
