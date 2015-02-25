@@ -145,6 +145,15 @@ sailfish_prep()
         echo -e "sailfish PATH already setting."
     fi
 
+    if [ ! `echo $LD_LIBRARY_PATH | grep -e /lib64` ] ; then
+        echo $LD_LIBRARY_PATH
+        echo LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/lib64 >> /etc/bashrc
+        echo export LD_LIBRARY_PATH >> /etc/bashrc
+        source /etc/bashrc
+    else
+        echo -e "lib64 in LD_LIBRARY_PATH already setting."
+    fi
+
     if [ ! `echo $LD_LIBRARY_PATH | grep -e $sailfish_path/lib` ] ; then
         echo $LD_LIBRARY_PATH 
         echo LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$sailfish_path/lib >> /etc/bashrc
