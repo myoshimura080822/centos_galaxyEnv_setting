@@ -25,9 +25,9 @@ source_dir='/usr/local/src'
 lib_dir='/usr/local/lib'
 bam_dir='/usr/local/include/bam'
 
-samtools_name='samtools-1.2'
-samtools_file='samtools-1.2.tar.bz2'
-samtools_source='https://github.com/samtools/samtools/releases/download/1.2/'$samtools_file
+samtools_name='samtools-0.1.19'
+samtools_file='samtools-0.1.19.tar.bz2'
+samtools_source='http://sourceforge.net/projects/samtools/files/samtools/0.1.19/'$samtools_file
 samtools_path=$source_dir'/'$samtools_name
 
 sailfish_name='Sailfish-0.6.3-Linux_x86-64'
@@ -93,7 +93,6 @@ samtools_prep()
         tar jxvf $samtools_file
         cd $samtools_name
         make
-        make install
     fi
 
     if [ ! -f $lib_dir/libbam.a ];then
@@ -109,9 +108,9 @@ samtools_prep()
         echo -e "samtools bam-dir already exists."
     fi
 
-    if [ ! `echo $PATH | grep -e $samtools_path/bin` ] ; then
+    if [ ! `echo $PATH | grep -e $samtools_path` ] ; then
         echo $PATH 
-        echo PATH=\$PATH:$samtools_path/bin >> /etc/bashrc
+        echo PATH=\$PATH:$samtools_path >> /etc/bashrc
         echo export PATH >> /etc/bashrc
         source /etc/bashrc
     else
